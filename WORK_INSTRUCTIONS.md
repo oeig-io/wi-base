@@ -373,7 +373,7 @@ This is important because correct structure ensures documents are scannable, nav
 As a general rule, include a 'Table of Contents' or TOC as the first `##` (H2). Here is a quick script to help visualize in list form the current TOC of any markdown document:
 
 ```
-./utility/toc.sh <file.md>
+./toc.sh <file.md>
 ```
 
 ## Markdown Task Lists
