@@ -309,6 +309,63 @@ Be consistent with how you refer to tool objects:
 - Common error states and what they mean in your context
 - How to translate technical outputs to non-technical language
 
+#### Tool Frontmatter Standards
+
+Tool files require YAML frontmatter for AI skill indexing. Add frontmatter at the top of every `*-tool.md` file.
+
+**Frontmatter Structure:**
+
+```yaml
+---
+name: {kebab-case-identifier}
+description: {one-line-purpose-statement}
+compatibility: opencode
+metadata:
+  type: tool
+  original_file: {filename}.md
+  category: {functional-category}
+  scope: {scope-identifier}
+---
+```
+
+**Field Definitions:**
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `name` | Kebab-case identifier matching filename minus `-tool.md` | `idempiere-rest-api`, `metabase-api` |
+| `description` | One-line summary of tool purpose | "REST API patterns for authentication..." |
+| `compatibility` | Always `opencode` | `opencode` |
+| `metadata.type` | Always `tool` | `tool` |
+| `metadata.original_file` | Actual filename | `idempiere-rest-api-tool.md` |
+| `metadata.category` | Functional category (e.g., integration, debugging, data, backup) | `integration` |
+| `metadata.scope` | Maps to wi-* directory name | `idempiere`, `metabase`, `linux`, `incus` |
+
+**Scope Mapping:**
+
+| Directory | Scope Value |
+|-----------|-------------|
+| `wi-idempiere/*` | `idempiere` |
+| `wi-metabase/*` | `metabase` |
+| `wi-incus/*` | `incus` |
+| `wi-linux/*` | `linux` |
+
+**Example:**
+
+```yaml
+---
+name: idempiere-rest-api
+description: REST API patterns for authentication, CRUD operations, nested record creation, process execution, and query filtering in iDempiere
+compatibility: opencode
+metadata:
+  type: tool
+  original_file: idempiere-rest-api-tool.md
+  category: integration
+  scope: idempiere
+---
+```
+
+> **📝 Note** - Roles and tasks may have frontmatter in the future for expanded skill support.
+
 ### Example: Training-Enriched Role Documentation
 
 Here's how organization-specific training information enhances work instructions:
