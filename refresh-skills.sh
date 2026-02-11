@@ -1,6 +1,11 @@
 #!/bin/bash
 # refresh-skills.sh - Create symlinks from wi-*/tool files to .opencode/skills/
 # 
+# Prerequisites for a file to be deployed as a skill:
+#   - Filename must match pattern: *-tool.md (e.g., idempiere-process-tool.md)
+#   - File must have frontmatter with a 'name' field (e.g., `name: idempiere-process`)
+#   - Skill name must match pattern: lowercase letters, numbers, hyphens only
+#
 # Usage: ./wi-base/refresh-skills.sh [wi-directory...]
 # Examples:
 #   ./wi-base/refresh-skills.sh                    # Auto-discover all wi-* directories
