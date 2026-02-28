@@ -4,6 +4,7 @@
 
 - [Summary](#summary)
 - [Document Maintenance Guidelines](#document-maintenance-guidelines)
+- [CRITICAL: No Real User or Company Data](#critical-no-real-user-or-company-data)
 - [DRY](#dry)
 - [Documentation Style](#documentation-style)
 - [Content Selection Guidelines](#content-selection-guidelines)
@@ -49,6 +50,24 @@ The following are core principles of maintaining clear, concise anti-fragile and
 - **Avoid numbered cross-references**: Reference sections by name, not number (e.g., "see UUID Pattern" not "see Pattern 13") - numbered references break when content is reordered
 - **Current references only**: Remove historical context and deprecated approaches
 - **Maintain TOC**: Update the table of contents when adding or removing major sections and only include ## and ### sections
+
+## CRITICAL: No Real User or Company Data
+
+⚠️ **Never include actual company names, email addresses, user credentials, or real employee information in work instructions that will be committed to public repositories.**
+
+**Always use fictional/generic placeholders:**
+
+| Safe Replacement | Use For |
+|----------------|---------|
+| `ACME` | Company/tenant names |
+| `example.com` | Email domains |
+| `user@example.com` | Email addresses |
+| `[CLIENT_ID]` | Numeric identifiers |
+| `[SET_PASSWORD]` | Password examples |
+
+**Why this matters:** Public repositories expose work instructions to the world. Real data creates attack surface (valid domains for phishing, username patterns, system IDs) and violates privacy. Generic examples communicate patterns without risk.
+
+**When in doubt:** Use `example.com` for emails/domains, `ACME` for company names, and bracket placeholders like `[CLIENT_ID]` for numeric identifiers.
 
 ## DRY
 
