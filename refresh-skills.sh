@@ -89,80 +89,76 @@ for dir in "${TARGET_DIRS[@]}"; do
 done
 
 # PHASE 2: Duplicate detection - Collect all skill names and sources
-# Use an associative array: skill_name -> source_type:directory:path
-# source_type is either "file" or "directory"
+#
+# A wi-* directory may contain multiple skills:
+#   - any number of `*-tool.md` files   (single-file form)
+#   - any number of `*-tool/` dirs      (directory form, must contain SKILL.md)
+# Each match becomes its own skill entry.
+#
+# skill_map entries are formatted as: skill_name:source_type:wi_dir:source_path
 skill_map=()
 
-find_skill_source() {
-    local dir="$1"
-    local tool_dir=""
-    local tool_file=""
-    
-    # Check for directory structure first (preferred)
-    # Use find to avoid globbing issues
-    if find "$dir" -maxdepth 1 -type d -name '*-tool' -print -quit | grep -q .; then
-        tool_dir=$(find "$dir" -maxdepth 1 -type d -name '*-tool' -print -quit)
-        echo "directory:$dir:$tool_dir"
-        return
-    fi
-    
-    # Check for single file structure
-    if find "$dir" -maxdepth 1 -type f -name '*-tool.md' -print -quit | grep -q .; then
-        tool_file=$(find "$dir" -maxdepth 1 -type f -name '*-tool.md' -print -quit)
-        echo "file:$dir:$tool_file"
-        return
-    fi
-    
-    echo ""
-}
+# register_skill <source_type> <wi_dir> <source_path>
+# Validates the skill source, extracts the skill name, checks for duplicates,
+# and appends an entry to skill_map.
+register_skill() {
+    local source_type="$1"
+    local wi_dir="$2"
+    local source_path="$3"
+    local skill_file
 
-for dir in "${TARGET_DIRS[@]}"; do
-    # Find skill source (file or directory)
-    source_info=$(find_skill_source "$dir")
-    [[ -z "$source_info" ]] && continue  # No tool found in this directory
-    
-    source_type="${source_info%%:*}"
-    source_path="${source_info#*:}"
-    source_path="${source_path#*:}"  # Remove dir part, keep actual path
-    
-    # Determine SKILL.md location and extract skill name
     if [[ "$source_type" == "directory" ]]; then
         skill_file="$source_path/SKILL.md"
     else
         skill_file="$source_path"
     fi
-    
+
     if [[ ! -f "$skill_file" ]]; then
         echo "Error: SKILL.md not found in $source_path" >&2
         exit 1
     fi
-    
-    # Extract skill name from frontmatter
+
+    local skill_name
     skill_name=$(sed -n '/^---$/,/^---$/{/^---$/d; /^name: /p}' "$skill_file" | sed 's/^name: //' | head -1)
-    
+
     if [[ -z "$skill_name" ]]; then
-        echo "Error: $(basename "$skill_file") missing frontmatter 'name'" >&2
+        echo "Error: $skill_file missing frontmatter 'name'" >&2
         exit 1
     fi
-    
+
     if [[ ! "$skill_name" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
-        echo "Error: $(basename "$skill_file") has invalid skill name '$skill_name'" >&2
+        echo "Error: $skill_file has invalid skill name '$skill_name'" >&2
         exit 1
     fi
-    
-    # Check for duplicate skill names
+
+    # Check for duplicate skill names across all wi-* dirs
     for entry in "${skill_map[@]}"; do
-        existing_skill="${entry%%:*}"
+        local existing_skill="${entry%%:*}"
         if [[ "$existing_skill" == "$skill_name" ]]; then
-            existing_dir="${entry#*:}"
-            existing_dir="${existing_dir%%:*}"
+            local rest="${entry#*:}"
+            rest="${rest#*:}"  # strip source_type
+            local existing_dir="${rest%%:*}"
             echo "Error: Duplicate skill name '$skill_name' found in" >&2
-            echo "  $existing_dir and $dir" >&2
+            echo "  $existing_dir and $wi_dir" >&2
             exit 1
         fi
     done
-    
-    skill_map+=("$skill_name:$source_type:$dir:$source_path")
+
+    skill_map+=("$skill_name:$source_type:$wi_dir:$source_path")
+}
+
+for dir in "${TARGET_DIRS[@]}"; do
+    # Directory-form skills: every `*-tool/` directly inside this wi-* dir
+    while IFS= read -r tool_dir; do
+        [[ -z "$tool_dir" ]] && continue
+        register_skill "directory" "$dir" "$tool_dir"
+    done < <(find "$dir" -maxdepth 1 -mindepth 1 -type d -name '*-tool' | sort)
+
+    # File-form skills: every `*-tool.md` directly inside this wi-* dir
+    while IFS= read -r tool_file; do
+        [[ -z "$tool_file" ]] && continue
+        register_skill "file" "$dir" "$tool_file"
+    done < <(find "$dir" -maxdepth 1 -mindepth 1 -type f -name '*-tool.md' | sort)
 done
 
 # PHASE 3: Processing - Create symlinks
