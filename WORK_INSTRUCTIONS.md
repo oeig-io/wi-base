@@ -328,9 +328,51 @@ Be consistent with how you refer to tool objects:
 - Common error states and what they mean in your context
 - How to translate technical outputs to non-technical language
 
+#### Tool Skill Structures
+
+Tool skills (the documents deployed by `wi-base/refresh-skills.sh` into `.opencode/skills/` and `.pi/skills/`) support two structures. Pick the simplest one that fits.
+
+**1. Single-file skill (default)**
+
+Use when the tool documentation stands alone with no companion files.
+
+```
+wi-{scope}/
+└── {skill-name}-tool.md
+```
+
+**2. Directory skill (with artifacts)**
+
+Use when the skill ships helper scripts, sample configs, or other artifacts that travel with the documentation.
+
+```
+wi-{scope}/
+└── {skill-name}-tool/
+    ├── SKILL.md
+    ├── scripts/
+    │   └── helper.py
+    └── examples/
+        └── sample.yaml
+```
+
+Key rules:
+- The directory name carries the `-tool` suffix (this is how `refresh-skills.sh` recognizes it as a skill).
+- The skill document inside is always named `SKILL.md`.
+- Supporting artifacts live in flat subdirectories one level deep (e.g., `scripts/`, `examples/`). Avoid deeper nesting — see [Directory Structure](#directory-structure).
+
+**Choosing between the two:**
+
+| Choose single-file when... | Choose directory when... |
+|----------------------------|--------------------------|
+| Pure documentation with no companion files | The skill includes runnable scripts referenced by the doc |
+| All examples fit inline in code blocks | The skill ships sample data or configuration files |
+| No artifacts to version alongside the doc | Grouping artifacts with the doc adds clarity |
+
+Both forms use the same frontmatter (see [Tool Frontmatter Standards](#tool-frontmatter-standards) below).
+
 #### Tool Frontmatter Standards
 
-Tool files require YAML frontmatter for AI skill indexing. Add frontmatter at the top of every `*-tool.md` file.
+Tool skills require YAML frontmatter for AI skill indexing. Add frontmatter at the top of every `*-tool.md` file or `*-tool/SKILL.md` file.
 
 **Frontmatter Structure:**
 
@@ -355,7 +397,7 @@ metadata:
 | `description` | One-line summary of tool purpose | "REST API patterns for authentication..." |
 | `compatibility` | Always `opencode` | `opencode` |
 | `metadata.type` | Always `tool` | `tool` |
-| `metadata.original_file` | Actual filename | `idempiere-rest-api-tool.md` |
+| `metadata.original_file` | Path of the source document inside the `wi-*` directory. For single-file skills this is the filename; for directory skills this is `{skill-name}-tool/SKILL.md` | `idempiere-rest-api-tool.md` or `nws-tx-alerts-api-tool/SKILL.md` |
 | `metadata.category` | Functional category (e.g., integration, debugging, data, backup) | `integration` |
 | `metadata.scope` | Maps to wi-* directory name | `idempiere`, `metabase`, `linux`, `incus` |
 
@@ -496,16 +538,26 @@ Here are guidelines for naming work instruction files:
   - Example: 'invoice-ap-email-to-document-process-task.md'
   - This convention ensures like documents appear next to each other in an alphabetical list.
 - use all lower case and '-' instead of spaces. This practice ensures quick and easy processing on all platforms.
+- Tool skills that need supporting artifacts use a directory with the same `-tool` suffix (no `.md`) containing a `SKILL.md` file. See [Tool Skill Structures](#tool-skill-structures).
+  - Example: `nws-tx-alerts-api-tool/` containing `SKILL.md` and a `scripts/` subdirectory.
 
 ## Directory Structure
 
-Try to use a single directory with no sub-directories. Here is why:
+**Default: prefer flat structure.** Place work instructions directly in their `wi-*` directory with no sub-directories. Here is why:
 
-- You can search for key turns using: `ls *some-term*` with no additional complexity or search through sub-directories.
+- You can search for key terms using `ls *some-term*` with no additional complexity or recursive search.
 - You can see all documents in one place.
 - A directory hierarchy only has one dimension. There are times when a document belongs in two or more places.
 - Use tags in your markdown to assign multiple organization strategies to a single file.
 - Tags are easy to identify and reason about.
+
+**Exception: tool skills that ship artifacts.** Some tool skills include supporting files (helper scripts, configuration samples, data fixtures) that travel with the skill. In that case, package the skill as a directory using the `-tool` suffix — see [Tool Skill Structures](#tool-skill-structures) for the layout.
+
+**Avoid nested labyrinths.** When a tool skill is packaged as a directory:
+
+- Keep subdirectories one level deep (e.g., `scripts/`, `examples/`). The skill should still feel flat.
+- If you find yourself nesting further, reconsider whether the content belongs as a separate skill, in another repository, or as inline documentation.
+- Do not introduce subdirectories for tasks, roles, or principles documents — those remain flat in their `wi-*` directory.
 
 ## Tags
 
