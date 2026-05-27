@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # refresh-skills.sh - Create symlinks from wi-*/tool files to .opencode/skills/ and .pi/skills/
 # 
 # Skill Structure Support:
