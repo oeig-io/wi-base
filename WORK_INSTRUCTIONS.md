@@ -174,15 +174,11 @@ Brief description of purpose and integration (2-3 sentences).
 
 ### When to Create a README
 
-Create a README when a directory contains multiple work instructions that need:
-- Conceptual grouping and context
-- Quick start guidance for new users
-- Navigation help to find the right work instruction
+**Every `wi-*` repository has a README at its root** — always, even when the repo holds a single work instruction. The root README exists so anyone (human or AI) can tell at a glance why the repo exists and where to go next. Keep it short: the repo name, a one- to two-sentence purpose, and links to the work instructions it contains.
 
-Don't create a README for:
-- Single work instruction files (the document itself is sufficient)
-- Directories with self-explanatory structure
-- Content that would just duplicate work instruction summaries
+Beyond the required root README, add a README inside a subdirectory only when that subdirectory needs its own conceptual grouping, quick-start, or navigation help — see [Subdirectory README](#subdirectory-readme).
+
+Don't add a README that would only restate the root README, duplicate a work instruction's summary, or describe a self-explanatory structure.
 
 ### Subdirectory README
 
