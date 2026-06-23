@@ -18,8 +18,8 @@
 # Examples:
 #   ./wi-base/refresh-skills.sh                    # Auto-discover all wi-* directories, both harnesses
 #   ./wi-base/refresh-skills.sh --pi-only          # Pi only
-#   ./wi-base/refresh-skills.sh wi-idempiere       # Single directory, both harnesses
-#   ./wi-base/refresh-skills.sh --opencode-only wi-idempiere  # Opencode only
+#   ./wi-base/refresh-skills.sh wi-idempiere-admin       # Single directory, both harnesses
+#   ./wi-base/refresh-skills.sh --opencode-only wi-idempiere-admin  # Opencode only
 # 
 # Exit codes: 0 = success, non-zero = error
 

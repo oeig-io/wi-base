@@ -401,7 +401,8 @@ metadata:
 
 | Directory | Scope Value |
 |-----------|-------------|
-| `wi-idempiere/*` | `idempiere` |
+| `wi-idempiere-admin/*` | `idempiere` |
+| `wi-idempiere-oeig/*` | `idempiere` |
 | `wi-metabase/*` | `metabase` |
 | `wi-incus/*` | `incus` |
 | `wi-linux/*` | `linux` |

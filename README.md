@@ -14,7 +14,7 @@ The purpose of this repository is to provide shared infrastructure for all work 
 Generate opencode skills from work instruction tool files:
 
 ```bash
-./wi-base/refresh-skills.sh wi-idempiere
+./wi-base/refresh-skills.sh wi-idempiere-admin
 ```
 
 ## Skill Mapping
