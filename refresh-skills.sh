@@ -73,8 +73,10 @@ set -- "${POSITIONAL_ARGS[@]}"
 # Full refresh wipes the entire skills directory; partial refresh only touches targeted skills.
 if [[ $# -eq 0 ]]; then
     IS_FULL_REFRESH=true
-    # Auto-discover all wi-* directories (excluding wi-base), sorted
-    mapfile -t TARGET_DIRS < <(find "$REPO_ROOT" -maxdepth 1 -type d -name 'wi-*' ! -name 'wi-base' | sort)
+    # Auto-discover all wi-* directories (excluding wi-base), sorted.
+    # repo-utils is intentionally included as a non-wi- skills source so its
+    # tool directories are picked up by the full refresh without renaming it.
+    mapfile -t TARGET_DIRS < <(find "$REPO_ROOT" -maxdepth 1 -type d \( -name 'wi-*' -o -name 'repo-utils' \) ! -name 'wi-base' | sort)
 else
     IS_FULL_REFRESH=false
     TARGET_DIRS=("$@")
