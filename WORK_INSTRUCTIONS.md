@@ -186,6 +186,8 @@ The purpose of subdirectory READMEs is to prevent parent READMEs from becoming t
 
 This is important because it keeps navigation simple while preserving access to detailed information when needed.
 
+**Scope:** this guidance governs README trees — directories a human browses, where following a link costs nothing. It does not apply to a tool skill's artifact directories (`scripts/`, `templates/`, `examples/`), where `SKILL.md` remains the single entry point. See [Where Skill Content Belongs](#where-skill-content-belongs).
+
 **When to create a subdirectory README:**
 - Parent README exceeds 200 lines
 - Subdirectory has significantly different scope than parent
@@ -347,6 +349,8 @@ wi-{scope}/
     ├── SKILL.md
     ├── scripts/
     │   └── helper.py
+    ├── references/
+    │   └── error-codes.md
     └── examples/
         └── sample.yaml
 ```
@@ -354,7 +358,8 @@ wi-{scope}/
 Key rules:
 - The directory name carries the `-tool` suffix (this is how `refresh-skills.sh` recognizes it as a skill).
 - The skill document inside is always named `SKILL.md`.
-- Supporting artifacts live in flat subdirectories one level deep (e.g., `scripts/`, `examples/`). Avoid deeper nesting — see [Directory Structure](#directory-structure).
+- Supporting artifacts live in flat subdirectories one level deep (e.g., `scripts/`, `references/`, `examples/`). Avoid deeper nesting — see [Directory Structure](#directory-structure).
+- `scripts/` holds runnable artifacts; `references/` holds documentation an actor reads on demand. See [Where Skill Content Belongs](#where-skill-content-belongs).
 
 **Choosing between the two:**
 
@@ -365,6 +370,29 @@ Key rules:
 | No artifacts to version alongside the doc | Grouping artifacts with the doc adds clarity |
 
 Both forms use the same frontmatter (see [Tool Frontmatter Standards](#tool-frontmatter-standards) below).
+
+#### Where Skill Content Belongs
+
+The purpose of this section is to decide what belongs in `SKILL.md` versus a companion file.
+
+This is important because skills are *loaded*, not browsed. Only a skill's `description` stays in context; an actor must choose to read `SKILL.md`, then choose again to read anything deeper. Every hop is a decision that can be skipped — and an actor who finds `SKILL.md` apparently complete will invent a flag rather than go looking for the real one. A README is read by a human who follows links at no cost, so the parent/child split that suits README trees is the wrong instinct here.
+
+**`SKILL.md` must stand alone for the primary use cases.** An actor that reads only `SKILL.md` should complete the common paths correctly, including how to invoke any bundled script and the flags those paths require. Scripts live in `scripts/` for maintainability — that is a code-organization choice, not a documentation boundary. Documenting how to run them is not duplication.
+
+**Split by how often content is needed, not by where the files live.**
+
+| Keep in `SKILL.md` | Move to `references/` |
+|--------------------|-----------------------|
+| Primary use cases and their commands | Exhaustive flag or option matrices |
+| Flags the common paths require | Troubleshooting and rare error states |
+| Invariants and rules an actor must respect | Deep background or protocol detail |
+| Where artifacts live and how to run them | Large samples and fixtures |
+
+**Name the trigger, not just the file.** When you do split, state *when* to read further — "read `references/errors.md` when a call returns 4xx" — rather than leaving a bare pointer. A pointer without a condition is routinely ignored.
+
+**Size is the signal to split.** Under roughly 500 lines, prefer one self-sufficient `SKILL.md`. Past that, move the least-used material into `references/` and keep the entry point tight.
+
+> ⚠️ **Warning** - Do not put a README inside a skill's `scripts/` that restates how to use the scripts. That content belongs in `SKILL.md`, and the script's own `--help` header serves anyone at a terminal. A third copy drifts out of date.
 
 #### Tool Frontmatter Standards
 
