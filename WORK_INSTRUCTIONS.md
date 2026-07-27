@@ -6,6 +6,7 @@
 - [Document Maintenance Guidelines](#document-maintenance-guidelines)
 - [CRITICAL: No Real User or Company Data](#critical-no-real-user-or-company-data)
 - [DRY](#dry)
+- [Progressive Conformance](#progressive-conformance)
 - [Documentation Style](#documentation-style)
 - [Content Selection Guidelines](#content-selection-guidelines)
   - [What to Include](#what-to-include)
@@ -42,11 +43,14 @@ The purpose of this document is to help the team write clear, concise and confor
 The following are core principles of maintaining clear, concise anti-fragile and conformant work instructions:
 
 - **DRY, Clear and concise**: Remove redundancy, focus on essential information and reference related information by name
+- **Word Liability**: Every word is a liability that must be maintained over time — if you cannot name the question a sentence answers, delete it
+- **Progressive Conformance**: Standards evolve — meet them in the content you touch, fix cheap gaps in the document you touched, and report rather than silently fix or rewrite non-conformance found elsewhere
 - **Documentation Style**: Get to the point, discuss the big picture, share appropriate details and stay friendly
 - **Consider AI in Content Creation**: Create material that can be directly applied and electrified by AI
 - **Prioritize references over examples**: If work instructions exist, reference them (do not repeat them)
 - **Avoid line number references**: Use searchable string references (e.g., "see Parameters Record Pattern")
 - **Prefer search terms over file references**: use searchable string references instead direct file references when appropriate
+- **Skills reference skills, not READMEs**: Reference another skill by its name (the frontmatter `name`) — a README exists to help maintain a repo's work instructions, so anything an actor needs to succeed belongs in a skill
 - **Avoid numbered cross-references**: Reference sections by name, not number (e.g., "see UUID Pattern" not "see Pattern 13") - numbered references break when content is reordered
 - **Current references only**: Remove historical context and deprecated approaches
 - **Maintain TOC**: Update the table of contents when adding or removing major sections and only include ## and ### sections
@@ -73,6 +77,22 @@ The following are core principles of maintaining clear, concise anti-fragile and
 
 Go to great effort to "Don't Repeat Yourself" (DRY). Be kind, clear and concise.
 
+## Progressive Conformance
+
+The purpose of this section is to decide how much of an existing document must meet the current standard when you change it.
+
+This is important because these standards evolve, and documents written before a principle existed do not update themselves. Read literally, "conform to work instructions" turns every small edit into a repo-wide audit; ignored entirely, non-conformance becomes permanent and the standard becomes fiction. So conformance expands over time, guided by how close the gap sits to the change you are making:
+
+| Scope | Expectation |
+|-------|-------------|
+| The content you are changing | Meet current standards — not optional |
+| The rest of the document you touched | Fix cheap, low-risk gaps such as frontmatter, naming, or a stale cross-reference; a larger rewrite is a judgment call, not a duty |
+| Any other document | Leave it alone |
+
+**Name what you do not fix.** When you notice non-conformance outside your change, say so when you report the change so the knowledge is not lost, and let the owner decide whether it earns its own effort. Silent tolerance and unrequested rewrites are both failures.
+
+Expect older documents to lag. A gap in one is work not yet done — never a pattern to copy or a precedent to cite.
+
 ## Documentation Style
 
 Our goal is to speak to all operating styles in a way they wish to be communicated with. The following is a framework for accomplishing this goal.
@@ -86,7 +106,7 @@ Our goal is to speak to all operating styles in a way they wish to be communicat
 
 The purpose of this section is to help you decide what content to include or exclude from work instructions.
 
-This is important because every word costs future maintenance effort. Write the minimum needed for success.
+This is important because of **Word Liability** — every word costs future maintenance effort. Write the minimum needed for success.
 
 ### What to Include
 
