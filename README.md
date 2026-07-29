@@ -25,9 +25,11 @@ Required frontmatter:
 ```yaml
 ---
 name: skill-name
-description: What this skill does
+description: What this skill does and when to reach for it
 ---
 ```
+
+See `WORK_INSTRUCTIONS.md` => "Skill Description" for how to craft a description that loads the skill at the right moment.
 
 ## Related Documentation
 

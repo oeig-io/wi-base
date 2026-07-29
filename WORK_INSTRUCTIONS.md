@@ -414,6 +414,26 @@ This is important because skills are *loaded*, not browsed. Only a skill's `desc
 
 > ⚠️ **Warning** - Do not put a README inside a skill's `scripts/` that restates how to use the scripts. That content belongs in `SKILL.md`, and the script's own `--help` header serves anyone at a terminal. A third copy drifts out of date.
 
+#### Skill Description
+
+The purpose of this section is to write a skill `description` that gets the skill loaded at the right moment.
+
+This is important because the description is the only part of a skill always in context (see [Where Skill Content Belongs](#where-skill-content-belongs)). It is not a title — it is the trigger an actor matches against a situation. A description that states only *what* a tool does is read and passed over by the actor who does not recognize their problem as the one it solves.
+
+**Name the situation, then the mechanism.**
+
+| Weak (what only) | Strong (situation first) |
+|------------------|--------------------------|
+| "Run a pi sub-agent in a detached tmux session under a persisted session id." | "Hand a task to a pi sub-agent running in a detached tmux session — use when work is long-running, output-heavy, or splits into independent pieces worth running in parallel." |
+
+Carry three things, in this order:
+
+- **The trigger** — "use when ...", stated as the need or symptom, not the feature.
+- **The actor's own words** — the phrasing someone would actually type, including synonyms ("audit" and "review" mean the same request).
+- **The boundary** — when sibling skills look alike, say which wins ("for anything you watch yourself, use pi-headless-tui").
+
+Keep it to one to three sentences: it costs context on every request. This is [Documentation Style](#documentation-style) compressed — point, then why, and no details.
+
 #### Tool Frontmatter Standards
 
 Tool skills require YAML frontmatter for AI skill indexing. Add frontmatter at the top of every `*-tool.md` file or `*-tool/SKILL.md` file.
@@ -438,7 +458,7 @@ metadata:
 | Field | Description | Example |
 |-------|-------------|---------|
 | `name` | Kebab-case identifier matching filename minus `-tool.md` | `idempiere-rest-api`, `metabase-api` |
-| `description` | One-line summary of tool purpose | "REST API patterns for authentication..." |
+| `description` | Situation-first summary: what the tool does *and* when to reach for it — see [Skill Description](#skill-description) | "REST API patterns for authentication..." |
 | `compatibility` | Always `opencode` | `opencode` |
 | `metadata.type` | Always `tool` | `tool` |
 | `metadata.original_file` | Path of the source document inside the `wi-*` directory. For single-file skills this is the filename; for directory skills this is `{skill-name}-tool/SKILL.md` | `idempiere-rest-api-tool.md` or `nws-tx-alerts-api-tool/SKILL.md` |
