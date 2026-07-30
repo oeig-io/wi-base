@@ -7,6 +7,7 @@
 - [CRITICAL: No Real User or Company Data](#critical-no-real-user-or-company-data)
 - [DRY](#dry)
 - [Progressive Conformance](#progressive-conformance)
+- [Me, We, Enterprise](#me-we-enterprise)
 - [Documentation Style](#documentation-style)
 - [Content Selection Guidelines](#content-selection-guidelines)
   - [What to Include](#what-to-include)
@@ -92,6 +93,18 @@ This is important because these standards evolve, and documents written before a
 **Name what you do not fix.** When you notice non-conformance outside your change, say so when you report the change so the knowledge is not lost, and let the owner decide whether it earns its own effort. Silent tolerance and unrequested rewrites are both failures.
 
 Expect older documents to lag. A gap in one is work not yet done — never a pattern to copy or a precedent to cite.
+
+## Me, We, Enterprise
+
+The purpose of this section is to offer a shared way to talk about who a work instruction is for, so you can meet a reader where they are.
+
+This is a consideration rather than a rule. The idea is young and will evolve alongside our tooling, so treat it as vocabulary worth holding in mind while you write.
+
+- **me** — someone says "I want to think about the following ...". Consider a personal repo, where an idea can be rough and still be useful. See the `personal-repo` skill for what belongs in one.
+- **we** — a `wi-*` repo. This is how we share skills, and it is where most work instructions live.
+- **enterprise** — today every actor sees every skill we share; as the infrastructure evolves, a role's world will shrink to the skills that role needs.
+
+Writing a me-scope idea so it could move to `wi-*` later is a kindness to your future self rather than an obligation.
 
 ## Documentation Style
 
